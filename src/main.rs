@@ -7,27 +7,29 @@ fn main() {
         rust_plate[x] = 1;
     }
 
-    let mut num_neighbours_arr: [i32; (GRID_SIZE * GRID_SIZE) as usize] =
-        [0; (GRID_SIZE * GRID_SIZE) as usize];
+    for y in 0..3 {
+        let mut num_neighbours_arr: [i32; (GRID_SIZE * GRID_SIZE) as usize] =
+            [0; (GRID_SIZE * GRID_SIZE) as usize];
 
-    for x in 0..rust_plate.len() {
-        num_neighbours_arr[x] = find_num_neighbours(&rust_plate, x, GRID_SIZE);
+        for x in 0..rust_plate.len() {
+            num_neighbours_arr[x] = find_num_neighbours(&rust_plate, x, GRID_SIZE);
+        }
+
+        let mut cell_change: [i32; (GRID_SIZE * GRID_SIZE) as usize] =
+            [0; (GRID_SIZE * GRID_SIZE) as usize];
+
+        for x in 0..cell_change.len() {
+            cell_change[x] = get_cell_change(&num_neighbours_arr, x, rust_plate[x]);
+        }
+
+        println!("============");
+        print_arr(&rust_plate, GRID_SIZE);
+        for x in 0..rust_plate.len() {
+            rust_plate[x] += cell_change[x];
+        }
+        print_arr(&rust_plate, GRID_SIZE);
+        println!("============");
     }
-
-    let mut cell_change: [i32; (GRID_SIZE * GRID_SIZE) as usize] =
-        [0; (GRID_SIZE * GRID_SIZE) as usize];
-
-    for x in 0..cell_change.len() {
-        cell_change[x] = get_cell_change(&num_neighbours_arr, x, rust_plate[x]);
-    }
-
-    println!("============");
-    print_arr(&rust_plate, GRID_SIZE);
-    for x in 0..rust_plate.len() {
-        rust_plate[x] += cell_change[x];
-    }
-    print_arr(&rust_plate, GRID_SIZE);
-    println!("============");
 }
 
 fn print_arr(arr: &[i32], grid_size: i32) {
